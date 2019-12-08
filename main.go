@@ -3,50 +3,49 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"fmt"
 )
 
-type Blog struct {
+type Post struct {
 	id int
-	title string
-	body string
+	Title string
+	Body string
 }
 
-var blogList = []Blog{
-	Blog{
-		id: 1, title: "test1", body: "testbody1",
-	},
-	Blog{
-		id: 2, title: "test2", body: "testbody2",
-	},
+type Posts struct {
+	Items []Post
 }
 
-// return array of blog
-func getBlog() Blog {
-	firstBlog := Blog{
+// create new article
+func New() *Post {
+	post1 := Post{
 		id: 1,
-		title: "testing title",
-		body: "testing body",
+		Title: "test",
+		Body: "body",
 	}
-	return firstBlog
+
+	return &post1
 }
 
-func getBlogList() []Blog {
-	return blogList
+func (p *Post) getAllPosts() {
+	return p.id
 }
+
+func PostsGet(post *Post) gin.HandlerFunc {
+	return func(c *gin.Context){
+		result := post.getAllPosts()
+		c.JSON(http.StatusOK, result)
+	}
+}
+
 
 func main() {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	blog := getBlog()
-	blogList := getBlogList()
-	fmt.Println(blogList)
-	r.GET("/ping", func (c *gin.Context){
-		c.JSON(http.StatusOK, gin.H{
-			"code": http.StatusOK,
-			"message": blog,
-		})
-	})
+
+	posts := New()
+
+
+	r.GET("/ping", PostsGet(posts))
 	r.Run()
 }
