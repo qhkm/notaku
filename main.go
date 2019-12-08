@@ -26,6 +26,19 @@ func New() *Post {
 	return &post1
 }
 
+// if we have functions
+// and struct
+
+type Animal struct {
+	name string
+	age int
+	type string
+}
+
+func (a *Animal) getName(){
+	return a.name
+}
+
 func (p *Post) getAllPosts() {
 	return p.id
 }
