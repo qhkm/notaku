@@ -12,27 +12,29 @@ type Post struct {
 }
 
 type Posts struct {
+	ID int
 	Items []Post
 }
 
 // create new article
-func New() *Post {
-	post1 := Post{
-		id: 1,
-		Title: "test",
-		Body: "body",
+func New() Posts {
+	p := Posts {
+		ID: 1,
+		Items: []Post {
+			{id: 1, Title: "test1", Body: "test1"},
+			{id: 2, Title: "test2", Body: "test2"},
+		},
 	}
-
-	return &post1
+	return p
+}
+// get all posts
+func (p Posts) getAllPosts() Posts {
+	return p
 }
 
-func (p *Post) getAllPosts() {
-	return p.id
-}
-
-func PostsGet(post *Post) gin.HandlerFunc {
+func PostsGet(posts Posts) gin.HandlerFunc {
 	return func(c *gin.Context){
-		result := post.getAllPosts()
+		result := posts.getAllPosts()
 		c.JSON(http.StatusOK, result)
 	}
 }
@@ -42,10 +44,7 @@ func main() {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-
 	posts := New()
-
-
 	r.GET("/ping", PostsGet(posts))
 	r.Run()
 }
