@@ -1,64 +1,79 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"fmt"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type Post struct {
-	id int
+	Id    int
 	Title string
-	Body string
+	Body  string
 }
 
 type Posts struct {
+	ID    int
 	Items []Post
 }
 
 // create new article
-func New() *Post {
-	post1 := Post{
-		id: 1,
-		Title: "test",
-		Body: "body",
-	}
-
-	return &post1
+func New() []Post {
+	lol := []Post{
+			{Id: 1, Title: "test1", Body: "test1"},
+			{Id: 2, Title: "test2", Body: "test2"},
+		}
+	return lol
 }
 
-// if we have functions
-// and struct
+func (p *[]Post) Add(post []Post) Posts {
+	newPost := 
+		Post{
+			Id:    1,
+			Title: "Add more",
+			Body:  "More body",
+		},
 
-type Animal struct {
-	name string
-	age int
-	type string
+	p = append(p, newPost)
+	return p
+
+	newAddPost := append(newPost, basicPost)
+	return newAddPost
 }
 
-func (a *Animal) getName(){
-	return a.name
+// get all posts
+func (p Posts) getAllPosts() Posts {
+	return p
 }
 
-func (p *Post) getAllPosts() {
-	return p.id
-}
-
-func PostsGet(post *Post) gin.HandlerFunc {
-	return func(c *gin.Context){
-		result := post.getAllPosts()
+// get all post
+func PostsGet(posts Posts) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		result := posts.getAllPosts()
 		c.JSON(http.StatusOK, result)
 	}
 }
-
 
 func main() {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-
 	posts := New()
-
-
 	r.GET("/ping", PostsGet(posts))
 	r.Run()
+}
+
+// not found page
+func NotFound(route *gin.Engine) {
+	route.NoRoute(func(c *gin.Context) {
+		c.AbortWithStatusJSON(404, "Not Found")
+	})
+}
+
+// nomethods commentj
+func NoMethods(route *gin.Engine) {
+	route.NoMethod(func(c *gin.Context) {
+		c.AbortWithStatusJSON(405, "not allowed")
+	})
 }
