@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-
 	r := gin.Default()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())

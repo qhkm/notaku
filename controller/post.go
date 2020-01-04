@@ -3,23 +3,25 @@ package controller
 import (
 	"net/http"
 
-	"notaku/model"
-
 	"github.com/gin-gonic/gin"
+	"notaku/service"
 	//comment
 	_ "github.com/mattn/go-sqlite3"
 )
 
 // GetPost test
 func GetPost(c *gin.Context) {
-	post := model.Post{}
-	err := c.Bind(&post)
-	if err != nil {
-		c.String(http.StatusBadRequest, "Bad request")
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": "get a post",
+	postService := service.PostService{}
+	PostList := postService.GetPostList()
+	// post := model.Post{}
+	// err := c.Bind(&post)
+	// if err != nil {
+	// 	c.String(http.StatusBadRequest, "Bad request")
+	// 	return
+	// }
+	c.JSONP(http.StatusOK, gin.H{
+		"message": "ok",
+		"data":    PostList,
 	})
 }
 
