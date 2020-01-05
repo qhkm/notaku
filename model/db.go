@@ -15,13 +15,11 @@ type DB struct {
 	*sql.DB
 }
 
-var db *sql.DB
-
 // NewDB test
 func NewDB() (*DB, error) {
 	//connect to db
 	var err error
-	db, err = sql.Open("sqlite3", "./note.db")
+	db, err := sql.Open("sqlite3", "./note.db")
 	if err != nil {
 		panic(err)
 	}

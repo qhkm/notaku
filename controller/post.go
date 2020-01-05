@@ -11,8 +11,12 @@ import (
 
 // GetPost test
 func GetPost(c *gin.Context) {
+	db, err := model.NewDB()
+	if err != nil {
+		panic(err.Error())
+	}
 	postService := model.PostService{}
-	PostList := postService.GetPostList()
+	PostList := postService.GetPostList(db.DB)
 	// post := model.Post{}
 	// err := c.Bind(&post)
 	// if err != nil {

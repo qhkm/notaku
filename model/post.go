@@ -21,17 +21,7 @@ type Env struct {
 }
 
 // GetPostList test
-func (p *PostService) GetPostList() []Post {
-	db, err := sql.Open("sqlite3", "./note.db")
-	if err != nil {
-		panic(err)
-	}
-
-	if err = db.Ping(); err != nil {
-		panic(err)
-	}
-
-	defer db.Close()
+func (p *PostService) GetPostList(db *sql.DB) []Post {
 	results, err := db.Query("SELECT * FROM posts")
 	if err != nil {
 		panic(err.Error())
