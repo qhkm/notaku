@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"notaku/model"
+	"notaku/util"
 	//comment
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -12,9 +13,8 @@ import (
 // GetPost test
 func GetPost(c *gin.Context) {
 	db, err := model.NewDB()
-	if err != nil {
-		panic(err.Error())
-	}
+	ut := util.Util{}
+	ut.CheckError(err)
 	postService := model.Env{DB: db.DB}
 	PostList := postService.GetPostList()
 	// post := model.Post{}

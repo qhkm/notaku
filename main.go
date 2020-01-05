@@ -20,8 +20,8 @@ func main() {
 	r.Run()
 }
 
-//check error
-func checkError(err error) {
+//CheckError test
+func CheckError(err error) {
 	if err != nil {
 		panic(err)
 	}

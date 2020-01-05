@@ -18,8 +18,8 @@ type Env struct {
 }
 
 // GetPostList test
-func (p *Env) GetPostList() []Post {
-	results, err := p.DB.Query("SELECT * FROM posts")
+func (env *Env) GetPostList() []Post {
+	results, err := env.DB.Query("SELECT * FROM posts")
 	if err != nil {
 		panic(err.Error())
 	}
