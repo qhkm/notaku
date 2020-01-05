@@ -10,29 +10,22 @@ func main() {
 	r := gin.Default()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+	r.NoRoute(notFound)
 	api := r.Group("api")
 	{
-		api.GET("/post/id", controller.GetPost)
-		api.GET("/posts", controller.GetAllPosts)
-		api.GET("/posts/add", controller.AddPost)
-		api.GET("/posts/delete", controller.DeletePost)
+		v1 := api.Group("v1")
+		v1.GET("/post/:id", controller.GetPost)
+		v1.GET("/posts", controller.GetAllPosts)
+		v1.GET("/posts/add", controller.AddPost)
+		v1.GET("/posts/update", controller.UpdatePost)
+		v1.GET("/posts/delete", controller.DeletePost)
 	}
 	r.Run()
 }
 
-//CheckError test
-func CheckError(err error) {
-	if err != nil {
-		panic(err)
-	}
-
-}
-
 // not found page
-func NotFound(route *gin.Engine) {
-	route.NoRoute(func(c *gin.Context) {
-		c.AbortWithStatusJSON(404, "Not Found")
-	})
+func notFound(c *gin.Context) {
+	c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 }
 
 // nomethods commentj

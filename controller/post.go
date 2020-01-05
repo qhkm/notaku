@@ -1,7 +1,9 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"notaku/model"
@@ -12,11 +14,27 @@ import (
 
 // GetPost test
 func GetPost(c *gin.Context) {
+	pathParam := c.Param("id")
+	id, _ := strconv.Atoi(pathParam)
 	db, err := model.NewDB()
 	ut := util.Util{}
 	ut.CheckError(err)
 	postService := model.Env{DB: db.DB}
-	PostList := postService.GetPostList()
+	PostList := postService.SinglePost(id)
+	c.JSONP(http.StatusOK, gin.H{
+		"message": "get all post",
+		"data":    PostList,
+		"param":   pathParam,
+	})
+}
+
+// GetAllPosts tets
+func GetAllPosts(c *gin.Context) {
+	db, err := model.NewDB()
+	ut := util.Util{}
+	ut.CheckError(err)
+	postService := model.Env{DB: db.DB}
+	PostList := postService.AllPosts()
 	// post := model.Post{}
 	// err := c.Bind(&post)
 	// if err != nil {
@@ -27,25 +45,54 @@ func GetPost(c *gin.Context) {
 		"message": "ok",
 		"data":    PostList,
 	})
+
 }
 
-// GetAllPosts tets
-func GetAllPosts(c *gin.Context) {
+// UpdatePost test
+func UpdatePost(c *gin.Context) {
+	db, err := model.NewDB()
+	ut := util.Util{}
+	ut.CheckError(err)
+	postService := model.Env{DB: db.DB}
+
+	testPost := model.Post{ID: 11, Title: "miaw tukar jak", Body: "lols"}
+	postService.UpdatePost(testPost)
+
 	c.JSON(http.StatusOK, gin.H{
-		"message": "get all post",
+		"message": "success update post",
 	})
 }
 
 // AddPost test
 func AddPost(c *gin.Context) {
+	db, err := model.NewDB()
+	ut := util.Util{}
+	ut.CheckError(err)
+	postService := model.Env{DB: db.DB}
+
+	testPost := model.Post{ID: 11, Title: "cuba jak", Body: "adoi"}
+	postService.AddPost(testPost)
+
 	c.JSON(http.StatusOK, gin.H{
-		"message": "add a post",
+		"message": "success add post",
 	})
 }
 
 // DeletePost test
 func DeletePost(c *gin.Context) {
+	db, err := model.NewDB()
+	ut := util.Util{}
+	ut.CheckError(err)
+	postService := model.Env{DB: db.DB}
+
+	// get id from param
+	// id := c.Params.ByName("id")
+	rowsAffected, err2 := postService.DeletePost(8)
+	if err2 != nil {
+		panic(err2.Error())
+	}
+	fmt.Println(rowsAffected)
 	c.JSON(http.StatusOK, gin.H{
-		"message": "delete post",
+		"message": "delete OK",
 	})
 }
