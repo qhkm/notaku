@@ -16,9 +16,9 @@ func main() {
 		v1 := api.Group("v1")
 		v1.GET("/post/:id", controller.GetPost)
 		v1.GET("/posts", controller.GetAllPosts)
-		v1.GET("/posts/add", controller.AddPost)
-		v1.GET("/posts/update", controller.UpdatePost)
-		v1.GET("/posts/delete", controller.DeletePost)
+		v1.POST("/posts/add", controller.AddPost)
+		v1.PUT("/post/:id", controller.UpdatePost)
+		v1.DELETE("/post/:id", controller.DeletePost)
 	}
 	r.Run()
 }

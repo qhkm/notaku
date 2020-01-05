@@ -12,13 +12,20 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+var db *model.DB
+
+func init() {
+	var err error
+	db, err = model.NewDB()
+	ut := util.Util{}
+	ut.CheckError(err)
+}
+
 // GetPost test
 func GetPost(c *gin.Context) {
 	pathParam := c.Param("id")
 	id, _ := strconv.Atoi(pathParam)
-	db, err := model.NewDB()
-	ut := util.Util{}
-	ut.CheckError(err)
+
 	postService := model.Env{DB: db.DB}
 	PostList := postService.SinglePost(id)
 	c.JSONP(http.StatusOK, gin.H{
@@ -30,9 +37,6 @@ func GetPost(c *gin.Context) {
 
 // GetAllPosts tets
 func GetAllPosts(c *gin.Context) {
-	db, err := model.NewDB()
-	ut := util.Util{}
-	ut.CheckError(err)
 	postService := model.Env{DB: db.DB}
 	PostList := postService.AllPosts()
 	// post := model.Post{}
@@ -50,13 +54,16 @@ func GetAllPosts(c *gin.Context) {
 
 // UpdatePost test
 func UpdatePost(c *gin.Context) {
-	db, err := model.NewDB()
-	ut := util.Util{}
-	ut.CheckError(err)
+	pathParam := c.Param("id")
+	id, _ := strconv.Atoi(pathParam)
+	objA := model.Post{}
+	if errA := c.ShouldBind(&objA); errA != nil {
+		panic(errA.Error())
+	}
+	objA.ID = id
+	fmt.Println(objA)
 	postService := model.Env{DB: db.DB}
-
-	testPost := model.Post{ID: 11, Title: "miaw tukar jak", Body: "lols"}
-	postService.UpdatePost(testPost)
+	postService.UpdatePost(objA)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success update post",
@@ -65,13 +72,19 @@ func UpdatePost(c *gin.Context) {
 
 // AddPost test
 func AddPost(c *gin.Context) {
-	db, err := model.NewDB()
-	ut := util.Util{}
-	ut.CheckError(err)
+	objA := model.Post{}
+	if errA := c.ShouldBind(&objA); errA != nil {
+		panic(errA.Error())
+	}
 	postService := model.Env{DB: db.DB}
 
-	testPost := model.Post{ID: 11, Title: "cuba jak", Body: "adoi"}
-	postService.AddPost(testPost)
+	ok, err := postService.AddPost(objA)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error":  err.Error(),
+			"status": ok,
+		})
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success add post",
@@ -80,14 +93,12 @@ func AddPost(c *gin.Context) {
 
 // DeletePost test
 func DeletePost(c *gin.Context) {
-	db, err := model.NewDB()
-	ut := util.Util{}
-	ut.CheckError(err)
+	pathParam := c.Param("id")
+	id, _ := strconv.Atoi(pathParam)
 	postService := model.Env{DB: db.DB}
-
 	// get id from param
 	// id := c.Params.ByName("id")
-	rowsAffected, err2 := postService.DeletePost(8)
+	rowsAffected, err2 := postService.DeletePost(id)
 	if err2 != nil {
 		panic(err2.Error())
 	}

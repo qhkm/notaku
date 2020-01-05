@@ -3,6 +3,7 @@ package model
 import (
 	"database/sql"
 	"fmt"
+	"log"
 )
 
 // Post int
@@ -22,7 +23,7 @@ func (env *Env) SinglePost(id int) Post {
 	sqlStatement := "SELECT * FROM posts WHERE id = ?"
 	results, err := env.DB.Query(sqlStatement, id)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err)
 	}
 
 	// var posts []model.Post
@@ -30,7 +31,7 @@ func (env *Env) SinglePost(id int) Post {
 	for results.Next() {
 		err := results.Scan(&post.ID, &post.Title, &post.Body)
 		if err != nil {
-			panic(err.Error())
+			log.Fatal(err)
 		}
 		// fmt.Println(strconv.Itoa(post.Id) + ": " + post.Title + " " + post.Body)
 	}
@@ -75,8 +76,8 @@ func (env *Env) UpdatePost(post Post) (int64, error) {
 
 // AddPost test
 func (env *Env) AddPost(post Post) (int64, error) {
-	sqlStatement := `INSERT INTO posts(id, title, body) values(?, ?, ?)`
-	results, err := env.DB.Exec(sqlStatement, post.ID, post.Title, post.Body)
+	sqlStatement := `INSERT INTO posts(title, body) values(?, ?)`
+	results, err := env.DB.Exec(sqlStatement, post.Title, post.Body)
 	if err != nil {
 		panic(err.Error())
 	}
