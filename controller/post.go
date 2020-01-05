@@ -4,14 +4,14 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"notaku/service"
+	"notaku/model"
 	//comment
 	_ "github.com/mattn/go-sqlite3"
 )
 
 // GetPost test
 func GetPost(c *gin.Context) {
-	postService := service.PostService{}
+	postService := model.PostService{}
 	PostList := postService.GetPostList()
 	// post := model.Post{}
 	// err := c.Bind(&post)
