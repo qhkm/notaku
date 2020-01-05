@@ -15,8 +15,8 @@ func GetPost(c *gin.Context) {
 	if err != nil {
 		panic(err.Error())
 	}
-	postService := model.PostService{}
-	PostList := postService.GetPostList(db.DB)
+	postService := model.Env{DB: db.DB}
+	PostList := postService.GetPostList()
 	// post := model.Post{}
 	// err := c.Bind(&post)
 	// if err != nil {

@@ -12,17 +12,14 @@ type Post struct {
 	Body  string
 }
 
-// PostService test
-type PostService struct{}
-
 // Env test
 type Env struct {
-	db *sql.DB
+	DB *sql.DB
 }
 
 // GetPostList test
-func (p *PostService) GetPostList(db *sql.DB) []Post {
-	results, err := db.Query("SELECT * FROM posts")
+func (p *Env) GetPostList() []Post {
+	results, err := p.DB.Query("SELECT * FROM posts")
 	if err != nil {
 		panic(err.Error())
 	}
