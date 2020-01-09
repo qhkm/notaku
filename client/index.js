@@ -1,21 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 
 const App = () => {
 
+    const [posts, setPosts] = useState([])
     const fetchData = async () => {
         const url = 'http://localhost:8080/api/v1/posts'
         let res = await axios.get(url)
-        console.log(res)
+        setPosts(res.data.data)
     }
+    console.log(posts)
 
     React.useEffect(() => {
         let data = fetchData();
-    })
+    }, [])
 
     return (
-        <div>test</div>
+        <ul>{posts !== null && posts.length > 0 &&
+            posts.map((data, idx) => (<li key={idx}>{data.title}</li>
+            ))}
+        </ul>
     )
 }
 
