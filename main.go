@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
 	"notaku/controller"
@@ -10,6 +11,9 @@ func main() {
 	r := gin.Default()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3500"}
+	r.Use(cors.New(config))
 	r.NoRoute(notFound)
 	api := r.Group("api")
 	{
