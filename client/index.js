@@ -1,27 +1,27 @@
-import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
-import axios from 'axios'
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+import axios from "axios";
 
 const App = () => {
+    const [data, setData] = useState(null);
 
     const [posts, setPosts] = useState([])
     const fetchData = async () => {
-        const url = 'http://localhost:8080/api/v1/posts'
-        let res = await axios.get(url)
-        setPosts(res.data.data)
-    }
-    console.log(posts)
+        const url = "http://localhost:8080/api/v1/posts";
+        let res = await axios.get(url);
+        setData(res.data.data);
+    };
+    console.log(data);
 
     React.useEffect(() => {
         let data = fetchData();
-    }, [])
+    }, []);
 
     return (
-        <ul>{posts !== null && posts.length > 0 &&
-            posts.map((data, idx) => (<li key={idx}>{data.title}</li>
-            ))}
-        </ul>
-    )
-}
+        <div>
+            {data && data.map((el, idx) => <li key={idx}>{el.title}</li>)}
+        </div>
+    );
+};
 
-ReactDOM.render(<App />, document.getElementById('app'))
+ReactDOM.render(<App />, document.getElementById("app"));
