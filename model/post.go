@@ -8,9 +8,9 @@ import (
 
 // Post int
 type Post struct {
-	ID    int    `json:"id"`
-	Title string `json:"title"`
-	Body  string `json:"body"`
+	ID    int    `json:"id,omitempty"`
+	Title string `json:"title,omitempty"`
+	Body  string `json:"body,omitempty"`
 }
 
 // Env test
@@ -66,6 +66,7 @@ func (env *Env) AllPosts() []Post {
 // UpdatePost test
 func (env *Env) UpdatePost(post Post) (int64, error) {
 	sqlStatement := `UPDATE posts SET title = ?, body = ? WHERE id = ?`
+	fmt.Println(post)
 	results, err := env.DB.Exec(sqlStatement, post.Title, post.Body, post.ID)
 	if err != nil {
 		panic(err.Error())
