@@ -75,8 +75,17 @@ const Main = () => {
             {loading && "loading"}
             <div>
                 <Link to="/">Home</Link>
-                <Link to="/test">Test</Link>
             </div>
+            <span>
+                <Link to="/test">Test</Link>
+            </span>
+            <span>
+                <Link to="/login">Login</Link>
+            </span>
+            <span>
+                <Link to="/signup">Signup</Link>
+            </span>
+            <br />
             <div>
                 <label>title</label>
                 <input value={title} onChange={handleTitleInput} />
@@ -109,6 +118,7 @@ const Detail = () => {
     const [post, setPost] = useState(null);
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
+    const [successStatus, setSuccessStatus] = useState("");
 
     const handleTitleInput = e => {
         setTitle(e.target.value);
@@ -129,9 +139,10 @@ const Detail = () => {
     const updatePost = async () => {
         const updateData = { title, body };
         const res = await axios.put(
-            `http://localhost:8080/api/v1/post/${param.id}`
+            `http://localhost:8080/api/v1/post/${param.id}`,
+            updateData
         );
-        console.log(res);
+        setSuccessStatus("Success update data");
     };
     React.useEffect(() => {
         fetchSinglePost();
@@ -141,6 +152,8 @@ const Detail = () => {
 
     return (
         <div>
+            <Link to="/">Back button</Link>
+            <h1 style={{ color: "red" }}>{successStatus}</h1>
             <h1>{post && post.title}</h1>
             <h3>{post && post.body}</h3>
             <div>

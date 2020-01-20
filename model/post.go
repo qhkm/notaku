@@ -64,10 +64,10 @@ func (env *Env) AllPosts() []Post {
 }
 
 // UpdatePost test
-func (env *Env) UpdatePost(post Post) (int64, error) {
+func (env *Env) UpdatePost(post Post, id int) (int64, error) {
 	sqlStatement := `UPDATE posts SET title = ?, body = ? WHERE id = ?`
 	fmt.Println(post)
-	results, err := env.DB.Exec(sqlStatement, post.Title, post.Body, post.ID)
+	results, err := env.DB.Exec(sqlStatement, post.Title, post.Body, id)
 	if err != nil {
 		panic(err.Error())
 	}
