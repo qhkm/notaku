@@ -4,29 +4,23 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
-	"notaku/controller"
+	"notaku/auth"
 )
 
 func main() {
 	r := gin.Default()
+
+	// Register middleware
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:3500"}
 	r.Use(cors.New(config))
+
+	// Register routes
+	auth.Routes(r)
 	r.NoRoute(notFound)
-	api := r.Group("api")
-	{
-		v1 := api.Group("v1")
-		v1.GET("/post/:id", controller.GetPost)
-		v1.GET("/posts", controller.GetAllPosts)
-		v1.POST("/posts/add", controller.AddPost)
-		v1.PUT("/post/:id", controller.UpdatePost)
-		v1.DELETE("/post/:id", controller.DeletePost)
-		v1.GET("/login", controller.Login)
-		v1.GET("/signup", controller.Signup)
-		v1.GET("/logout", controller.Logout)
-	}
+	
 	r.Run()
 }
 
