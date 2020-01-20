@@ -9,6 +9,7 @@ import (
 // Post int
 type Post struct {
 	ID    int    `json:"id,omitempty"`
+	UserID    int    `json:"user_id,omitempty"`
 	Title string `json:"title,omitempty"`
 	Body  string `json:"body,omitempty"`
 }
@@ -29,7 +30,7 @@ func (env *Env) SinglePost(id int) Post {
 	// var posts []model.Post
 	var post Post
 	for results.Next() {
-		err := results.Scan(&post.ID, &post.Title, &post.Body)
+		err := results.Scan(&post.ID, &post.UserID, &post.Title, &post.Body)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -51,7 +52,7 @@ func (env *Env) AllPosts() []Post {
 	var posts []Post
 	for results.Next() {
 		var post Post
-		err := results.Scan(&post.ID, &post.Title, &post.Body)
+		err := results.Scan(&post.ID, &post.UserID, &post.Title, &post.Body)
 		if err != nil {
 			panic(err.Error())
 		}

@@ -47,14 +47,14 @@ const Main = () => {
         const submitData = { title, body };
         console.log(submitData);
         let res = await axios.post(
-            "http://localhost:8080/api/v1/posts/add",
+            "http://localhost:8080/api/v1/users/add",
             submitData
         );
         console.log(res);
     };
 
     const fetchData = async () => {
-        const url = "http://localhost:8080/api/v1/posts";
+        const url = "http://localhost:8080/api/v1/users";
         let res = await axios.get(url);
         setData(res.data.data);
         return res.data.data;
@@ -102,6 +102,82 @@ const Main = () => {
                             <Link to={`/post/${el.id}`}>
                                 <span>{el.title}</span>
                                 <span>{el.body}</span>
+                            </Link>
+                            <button onClick={() => deleteData(el.id)}>
+                                delete
+                            </button>
+                        </li>
+                    </ul>
+                ))}
+            <h1>User</h1>
+            <User />
+        </div>
+    );
+};
+
+const User = () => {
+    const [data, setData] = useState(null);
+    const [name, setName] = useState("");
+    const [age, setAge] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleNameInput = e => {
+        setName(e.target.value);
+        console.log(name);
+    };
+
+    const handleAgeInput = e => {
+        setAge(e.target.value);
+        console.log(age);
+    };
+
+    const addData = async () => {
+        const parsedAge = parseInt(age, 10);
+        const submitData = { name, age: parsedAge };
+        console.log(submitData);
+        let res = await axios.post(
+            "http://localhost:8080/api/v1/users/add",
+            submitData
+        );
+        console.log(res);
+    };
+
+    const fetchData = async () => {
+        const url = "http://localhost:8080/api/v1/users";
+        let res = await axios.get(url);
+        setData(res.data.data);
+        return res.data.data;
+    };
+
+    const deleteData = async idx => {
+        const url = `http://localhost:8080/api/v1/user/${idx}`;
+        let res = await axios.delete(url);
+    };
+
+    React.useEffect(() => {
+        fetchData().then(data => {
+            console.log(data);
+        });
+    }, []);
+    return (
+        <div>
+            {loading && "loading"}
+            <div>
+                <label>Name</label>
+                <input value={name} onChange={handleNameInput} />
+            </div>
+            <div>
+                <label>Age</label>
+                <input value={age} onChange={handleAgeInput} />
+            </div>
+            <button onClick={addData}>Add</button>
+            {data &&
+                data.map((el, idx) => (
+                    <ul key={idx}>
+                        <li>
+                            <Link to={`/user/${el.id}`}>
+                                <span>{el.name}</span>
+                                <span>{el.age}</span>
                             </Link>
                             <button onClick={() => deleteData(el.id)}>
                                 delete
