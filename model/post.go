@@ -105,8 +105,3 @@ func (env *Env) DeletePost(id int) (int64, error) {
 	return count, nil
 }
 
-// type User struct {
-// 	Id   int
-// 	Name string
-// 	Age  int
-// }

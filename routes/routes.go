@@ -1,4 +1,4 @@
-package auth
+package routes
 
 import (
 	"notaku/controller"
@@ -13,6 +13,7 @@ func Routes(route *gin.Engine) {
 		v1.POST("/posts/add", controller.AddPost)
 		v1.PUT("/post/:id", controller.UpdatePost)
 		v1.DELETE("/post/:id", controller.DeletePost)
+		v1.GET("/users", controller.GetAllUsers)
 		v1.GET("/login", controller.Login)
 		v1.GET("/signup", controller.Signup)
 		v1.GET("/logout", controller.Logout)

@@ -4,7 +4,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
-	"notaku/auth"
+	"notaku/routes"
 )
 
 func main() {
@@ -18,7 +18,7 @@ func main() {
 	r.Use(cors.New(config))
 
 	// Register routes
-	auth.Routes(r)
+	routes.Routes(r)
 	r.NoRoute(notFound)
 	
 	r.Run()
