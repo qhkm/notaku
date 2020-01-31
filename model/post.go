@@ -8,9 +8,10 @@ import (
 
 // Post int
 type Post struct {
-	ID    int    `json:"id"`
-	Title string `json:"title"`
-	Body  string `json:"body"`
+	ID    int    `json:"id,omitempty"`
+	UserID    int    `json:"user_id,omitempty"`
+	Title string `json:"title,omitempty"`
+	Body  string `json:"body,omitempty"`
 }
 
 // Env test
@@ -29,7 +30,7 @@ func (env *Env) SinglePost(id int) Post {
 	// var posts []model.Post
 	var post Post
 	for results.Next() {
-		err := results.Scan(&post.ID, &post.Title, &post.Body)
+		err := results.Scan(&post.ID, &post.UserID, &post.Title, &post.Body)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -51,7 +52,7 @@ func (env *Env) AllPosts() []Post {
 	var posts []Post
 	for results.Next() {
 		var post Post
-		err := results.Scan(&post.ID, &post.Title, &post.Body)
+		err := results.Scan(&post.ID, &post.UserID, &post.Title, &post.Body)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -66,6 +67,7 @@ func (env *Env) AllPosts() []Post {
 // UpdatePost test
 func (env *Env) UpdatePost(post Post) (int64, error) {
 	sqlStatement := `UPDATE posts SET title = ?, body = ? WHERE id = ?`
+	fmt.Println(post)
 	results, err := env.DB.Exec(sqlStatement, post.Title, post.Body, post.ID)
 	if err != nil {
 		panic(err.Error())
@@ -104,8 +106,3 @@ func (env *Env) DeletePost(id int) (int64, error) {
 	return count, nil
 }
 
-// type User struct {
-// 	Id   int
-// 	Name string
-// 	Age  int
-// }

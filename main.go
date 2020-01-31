@@ -2,7 +2,8 @@ package main
 
 import (
 	"net/http"
-	"notaku/controller"
+
+	"notaku/routes"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
@@ -14,7 +15,7 @@ import (
 func main() {
 	r := gin.Default()
 
-	//register middleware
+	// Register middleware
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
@@ -29,17 +30,11 @@ func main() {
 
 	// route middleware
 	r.NoRoute(notFound)
-	api := r.Group("api")
-	{
-		v1 := api.Group("v1")
-		v1.GET("/post/:id", controller.GetPost)
-		v1.GET("/posts", controller.GetAllPosts)
-		v1.POST("/posts/add", controller.AddPost)
-		v1.PUT("/post/:id", controller.UpdatePost)
-		v1.DELETE("/post/:id", controller.DeletePost)
-		v1.GET("/signup", Signup)
-		v1.GET("/login", Login)
-	}
+
+	// Register routes
+	routes.Routes(r)
+	r.NoRoute(notFound)
+
 	r.Run()
 }
 

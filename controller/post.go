@@ -60,10 +60,18 @@ func UpdatePost(c *gin.Context) {
 	if errA := c.ShouldBind(&objA); errA != nil {
 		panic(errA.Error())
 	}
+	fmt.Println(objA)
 	objA.ID = id
 	fmt.Println(objA)
 	postService := model.Env{DB: db.DB}
-	postService.UpdatePost(objA)
+	ok, err := postService.UpdatePost(objA)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error":  err.Error(),
+			"status": ok,
+		})
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success update post",
