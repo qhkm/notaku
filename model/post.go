@@ -8,10 +8,10 @@ import (
 
 // Post int
 type Post struct {
-	ID    int    `json:"id,omitempty"`
-	UserID    int    `json:"user_id,omitempty"`
-	Title string `json:"title,omitempty"`
-	Body  string `json:"body,omitempty"`
+	ID     int    `json:"id,omitempty"`
+	UserID int    `json:"user_id,omitempty"`
+	Title  string `json:"title,omitempty"`
+	Body   string `json:"body,omitempty"`
 }
 
 // Env test
@@ -105,4 +105,3 @@ func (env *Env) DeletePost(id int) (int64, error) {
 	fmt.Println(count)
 	return count, nil
 }
-

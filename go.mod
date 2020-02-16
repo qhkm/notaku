@@ -3,6 +3,7 @@ module notaku
 go 1.12
 
 require (
+	github.com/appleboy/gin-jwt/v2 v2.6.3
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-contrib/sessions v0.0.3
 	github.com/gin-gonic/contrib v0.0.0-20191209060500-d6e26eeaa607
