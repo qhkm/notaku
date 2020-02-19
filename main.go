@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/appleboy/gin-jwt/v2"
+
 	_ "github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
@@ -9,6 +9,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"notaku/routes"
 )
+
 
 func main() {
 	r := gin.Default()

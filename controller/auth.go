@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"github.com/gin-contrib/sessions"
+	"github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -21,6 +22,26 @@ func Signup(c *gin.Context) {
 	})
 }
 
+type User struct {
+	ID       int    `json:"id"`
+	Email    string `json:"email"`
+	Password string `json: "password"`
+}
+
+var identityKey = "id"
+
+func Hello(c *gin.Context){
+	fmt.Println("success")
+	claims := jwt.ExtractClaims(c)
+	fmt.Println(claims)
+	user, _ := c.Get(identityKey)
+	fmt.Println(user)
+	c.JSONP(http.StatusOK, gin.H{
+		"userID": claims[identityKey],
+		"Email": user.(*User).Email,
+	})
+}
+
 func Logout(c *gin.Context) {
 	fmt.Println("success")
 	c.JSONP(http.StatusOK, gin.H{
@@ -28,11 +49,7 @@ func Logout(c *gin.Context) {
 	})
 }
 
-type User struct {
-	ID       int    `json:"id"`
-	Email    string `json:"email"`
-	Password string `json: "password"`
-}
+
 
 type JWT struct {
 	Token string `json: "token"`
@@ -68,7 +85,7 @@ type ExampleData struct {
 func Login(c *gin.Context) {
 
 	var qaiyyum ExampleData
-	qaiyyum.email = "qaiyyum"
+	qaiyyum.email = "qaiyyum@gmail.com"
 	qaiyyum.password = "test"
 
 	fmt.Println(qaiyyum)
@@ -77,7 +94,7 @@ func Login(c *gin.Context) {
 
 	if err := c.BindJSON(&requestData); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "testing bad erro",
+			"message": "testing bad error",
 		})
 		fmt.Println(err)
 		// need to abort
@@ -91,9 +108,7 @@ func Login(c *gin.Context) {
 		// create session
 		session := sessions.Default(c)
 		v := session.Get("count")
-		x := session.Get("mysession")
 		fmt.Println(v)
-		fmt.Println(x)
 		session.Set("count", "world")
 		session.Save()
 		c.JSON(200, gin.H{
@@ -101,6 +116,10 @@ func Login(c *gin.Context) {
 		})
 
 		// return cookies
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"message": requestData,
+		})
 	}
 
 	// validate empty
@@ -122,7 +141,5 @@ func Login(c *gin.Context) {
 	// check email and password in DB exist
 	// if exist generate token
 	// pass token to client
-	c.JSON(http.StatusOK, gin.H{
-		"message": requestData,
-	})
+
 }
