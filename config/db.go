@@ -1,13 +1,14 @@
-package model
+package config
 
 import (
 	"database/sql"
 	"log"
+	"notaku/model"
 )
 
 // Datastore test
 type Datastore interface {
-	AllPosts() ([]*Post, error)
+	AllPosts() ([]*model.Post, error)
 }
 
 // DB test

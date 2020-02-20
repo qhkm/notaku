@@ -6,17 +6,18 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"notaku/config"
 	"notaku/model"
 	"notaku/util"
 	//comment
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var db *model.DB
+var db *config.DB
 
 func init() {
 	var err error
-	db, err = model.NewDB()
+	db, err = config.NewDB()
 	ut := util.Util{}
 	ut.CheckError(err)
 }
