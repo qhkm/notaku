@@ -1,15 +1,13 @@
 package main
 
 import (
-
-	_ "github.com/gin-contrib/cors"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
 	"notaku/routes"
 )
-
 
 func main() {
 	r := gin.Default()
@@ -23,9 +21,9 @@ func main() {
 	r.Use(sessions.Sessions("mysession", store))
 
 	// cors middleware
-	// config := cors.DefaultConfig()
-	// config.AllowOrigins = []string{"http://localhost:3500"}
-	// r.Use(cors.New(config))
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"}
+	r.Use(cors.New(config))
 
 	// route middleware
 	r.NoRoute(notFound)
