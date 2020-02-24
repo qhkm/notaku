@@ -85,9 +85,12 @@ func AddPost(c *gin.Context) {
 	if errA := c.ShouldBind(&objA); errA != nil {
 		panic(errA.Error())
 	}
+	fmt.Println(objA)
 	postService := model.Env{DB: db.DB}
 
 	ok, err := postService.AddPost(objA)
+	fmt.Println(err)
+	fmt.Println(ok)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error":  err.Error(),
