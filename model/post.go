@@ -78,8 +78,8 @@ func (env *Env) UpdatePost(post Post) (int64, error) {
 
 // AddPost test
 func (env *Env) AddPost(post Post) (int64, error) {
-	sqlStatement := `INSERT INTO posts(title, body) values(?, ?)`
-	results, err := env.DB.Exec(sqlStatement, post.Title, post.Body)
+	sqlStatement := `INSERT INTO posts(id, user_id, title, body) values(?, ?, ?, ?)`
+	results, err := env.DB.Exec(sqlStatement, post.ID, post.UserID, post.Title, post.Body)
 	if err != nil {
 		panic(err.Error())
 	}
