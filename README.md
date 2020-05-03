@@ -1,5 +1,6 @@
 # Small web app 
-Small web app written in golang
+- Small web app written in golang.
+- Note.mu clone
 
 # Stack
 ## Frontend
