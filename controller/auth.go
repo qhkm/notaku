@@ -8,6 +8,11 @@ import (
 	"net/http"
 )
 
+func Login(c *gin.Context) number {
+}
+
+// add comments
+
 // func Login(c *gin.Context) {
 // 	fmt.Println("success")
 // 	c.JSONP(http.StatusOK, gin.H{
