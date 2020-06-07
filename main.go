@@ -53,3 +53,9 @@ type QueryError struct {
 	Query string
 	Err   error
 }
+
+
+type TestStruct struct {
+	Total int
+	Name string
+}
